@@ -1,0 +1,7 @@
+## Interface: 16001
+## Title: Quest Drop Rates
+## Notes: Shows quest-item drop rates on creature tooltips using QuestieDB data.
+## Version: 0.1.0
+## RequiredDeps: QuestieDB
+
+QuestDropRates.lua
