@@ -70,6 +70,10 @@ local function GetNPCID(unit)
         return nil
     end
 
+    if issecretvalue and issecretvalue(unit) then
+        return nil
+    end
+
     local guid = UnitGUID(unit)
     if not guid then
         return nil
