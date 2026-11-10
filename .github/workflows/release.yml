@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Package addon
+        id: package
+        shell: bash
+        run: |
+          version="$(sed -n 's/^## Version: //p' QuestDropRates.toc)"
+          tag_version="${GITHUB_REF_NAME#v}"
+          if [[ "$tag_version" != "$version" ]]; then
+            echo "Tag $GITHUB_REF_NAME does not match addon version $version" >&2
+            exit 1
+          fi
+
+          mkdir -p dist/QuestDropRates
+          cp QuestDropRates.lua QuestDropRates.toc README.md LICENSE dist/QuestDropRates/
+          asset="QuestDropRates-${GITHUB_REF_NAME}.zip"
+          (cd dist && zip -qr "../$asset" QuestDropRates)
+          echo "asset=$asset" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "${{ steps.package.outputs.asset }}" \
+            --title "Quest Drop Rates $GITHUB_REF_NAME" \
+            --generate-notes

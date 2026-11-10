@@ -16,3 +16,10 @@ Install QuestieDB, then place the `QuestDropRates` folder in
 ## License
 
 This addon is available under the MIT License; see [LICENSE](LICENSE).
+
+## Releases
+
+Releases are published automatically when a version tag is pushed. Update the
+`## Version` value in `QuestDropRates.toc`, then push a matching tag such as
+`v0.1.0`. The workflow checks that the tag and addon versions match, packages
+the addon folder as a ZIP, and attaches it to a GitHub Release.
